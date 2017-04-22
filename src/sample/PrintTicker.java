@@ -16,13 +16,13 @@ public class PrintTicker {
     public String displayCompanyName(HashMap<String, Stock> tickersMap) {
         Stock stock = tickersMap.get("\"XXII\"");
 
-        return "Company Name: " + stock.companyNameToString();
+        return stock.companyNameToString();
     }
 
     public String displayCompanySymbol(HashMap<String, Stock> tickersMap) {
         Stock stock = tickersMap.get("\"XXII\"");
 
-        return "Symbol" + stock.tickerSymbolToString();
+        return stock.tickerSymbolToString();
     }
 
     public String displayMarketCap(HashMap<String, Stock> tickersMap) {

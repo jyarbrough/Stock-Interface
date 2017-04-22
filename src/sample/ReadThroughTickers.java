@@ -28,19 +28,20 @@ public class ReadThroughTickers {
 
         PrintTicker printTicker = new PrintTicker();
 
-        String printCompanyName = printCompanyMethod(tickersMap, printTicker);
+        String printCompanyName = printTicker.displayCompanyName(tickersMap);
         String printMarketCap = printTicker.displayMarketCap(tickersMap);
         String printIpoYear = printTicker.displayIpoYear(tickersMap);
         String printSector = printTicker.displaySector(tickersMap);
         String printIndustry = printTicker.displayIndustry(tickersMap);
         String printLink = printTicker.displayLink(tickersMap);
 
-        System.out.println(printCompanyName + "bla bla " + printMarketCap);
+        System.out.println(printCompanyName + " " + printMarketCap + " " + printIpoYear + " " + printSector
+                + " " + printIndustry + " " + printLink);
+
+//        Controller.printToTextFields(printCompanyName, printMarketCap, printIpoYear, printSector, printIndustry, printLink);
 
         input.close();
     }
 
-    public static String printCompanyMethod(HashMap<String, Stock> tickersMap, PrintTicker printTicker) {
-        return printTicker.displayCompanyName(tickersMap);
-    }
+
 }

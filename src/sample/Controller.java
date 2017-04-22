@@ -6,10 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -24,14 +21,10 @@ public class Controller implements Initializable {
     public AnchorPane radioButtonPane;
     public AnchorPane manualEntryPane;
     public AnchorPane profilePane;
-
     public RadioButton listRadioButton;
     public RadioButton manualRadioButton;
-
     public ToggleGroup radioToggle;
-
-    public ChoiceBox tickerSymbolChoiceBox;
-
+    public ListView tickerSymbolListView;
     public TextField tickerSymbolEntryField;
     public TextField companyTitleField;
     public TextField marketCapField;
@@ -41,7 +34,7 @@ public class Controller implements Initializable {
     public TextField websiteField;
 
     public void resetAll() {
-        tickerSymbolChoiceBox.setDisable(true);
+        tickerSymbolListView.setDisable(true);
         tickerSymbolEntryField.setDisable(true);
         companyTitleField.setDisable(true);
         marketCapField.setDisable(true);
@@ -60,12 +53,12 @@ public class Controller implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 resetAll();
-                tickerSymbolChoiceBox.setDisable(false);
+                tickerSymbolListView.setDisable(false);
                 ObservableList<String> observableList = FXCollections.observableArrayList(
                         "joe"
                 );
 
-                tickerSymbolChoiceBox.setItems(observableList);
+                tickerSymbolListView.setItems(observableList);
             }
         });
 
@@ -77,7 +70,6 @@ public class Controller implements Initializable {
 
             }
         });
-
 
         tickerSymbolEntryField.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -104,7 +96,7 @@ public class Controller implements Initializable {
                         e.printStackTrace();
                     }
 
-                    sectorField.setText(ReadThroughTickers.printCompanyMethod());
+//                    sectorField.setText(ReadThroughTickers.printCompanyMethod());
                 }
             }
         });
@@ -114,4 +106,8 @@ public class Controller implements Initializable {
 //        companyTitleField.setText(companyName);
 //    }
 
+    public  void printToTextFields(String companyName, String marketCap, String ipoYear, String sector, String industry, String link) {
+
+
+    }
 }
