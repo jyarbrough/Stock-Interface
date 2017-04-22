@@ -10,10 +10,10 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import sample.models.Stock;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -49,14 +49,23 @@ public class Controller implements Initializable {
 
 //        assert manualRadioButton != null : "fx:id=\"manualRadioButton\" was not injected: check your FXML file 'simple.fxml'.";
 
+        AllStockFactory allStockFactory = new AllStockFactory();
+        final HashMap<String, Stock> tickersMap = allStockFactory.build();
+
+        PrintTicker printTicker = new PrintTicker();
+
         listRadioButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 resetAll();
                 tickerSymbolListView.setDisable(false);
-                ObservableList<String> observableList = FXCollections.observableArrayList(
-                        "joe"
-                );
+
+                ObservableList<String> observableList = FXCollections.observableArrayList();
+
+                for (Stock stock : tickersMap.values()) {
+                    String symbol = stock.getSymbol();
+                    observableList.add(symbol);
+                }
 
                 tickerSymbolListView.setItems(observableList);
             }
@@ -84,17 +93,12 @@ public class Controller implements Initializable {
 
 //                    industryField.setText(PrintTicker.sendCompanyName(this.toString()));
 
-                    try {
-                        InsertFilePathAndMerge.insertFilePathAndMerge();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
 
-                    try {
-                        ReadThroughTickers.readThroughTickers();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    String companyName = printTicker.getCompanyName(tickersMap, tickerSymbolEntryField.getText());
+                    String marketCap = printTicker.getMarketCap(tickersMap);
+
+                    companyTitleField.setText(companyName);
+                    marketCapField.setText(marketCap);
 
 //                    sectorField.setText(ReadThroughTickers.printCompanyMethod());
                 }
@@ -106,7 +110,7 @@ public class Controller implements Initializable {
 //        companyTitleField.setText(companyName);
 //    }
 
-    public  void printToTextFields(String companyName, String marketCap, String ipoYear, String sector, String industry, String link) {
+    public void printToTextFields(String companyName, String marketCap, String ipoYear, String sector, String industry, String link) {
 
 
     }

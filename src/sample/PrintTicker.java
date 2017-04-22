@@ -1,5 +1,7 @@
 package sample;
 
+import sample.models.Stock;
+
 import java.util.HashMap;
 
 public class PrintTicker {
@@ -13,19 +15,20 @@ public class PrintTicker {
 //    }
 
 
-    public String displayCompanyName(HashMap<String, Stock> tickersMap) {
-        Stock stock = tickersMap.get("\"XXII\"");
+    public String getCompanyName(HashMap<String, Stock> tickersMap, String searchKey) {
+        Stock stock = tickersMap.get("\"" + searchKey + "\"");
 
-        return stock.companyNameToString();
+        return stock.companyNameToString().substring(1, stock.companyNameToString().length() - 1 );
+//        return stock.companyNameToString().replace("\"", "");
     }
 
-    public String displayCompanySymbol(HashMap<String, Stock> tickersMap) {
+    public String getCompanySymbol(HashMap<String, Stock> tickersMap) {
         Stock stock = tickersMap.get("\"XXII\"");
 
         return stock.tickerSymbolToString();
     }
 
-    public String displayMarketCap(HashMap<String, Stock> tickersMap) {
+    public String getMarketCap(HashMap<String, Stock> tickersMap) {
         Stock stock = tickersMap.get("\"XXII\"");
 
         return stock.marketCapToString();

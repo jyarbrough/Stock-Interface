@@ -1,4 +1,6 @@
-package sample;
+package sample.models;
+
+import java.util.HashMap;
 
 public class Stock {
 
