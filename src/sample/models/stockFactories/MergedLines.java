@@ -1,4 +1,4 @@
-package sample;
+package sample.models.stockFactories;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilesToMerge {
+public class MergedLines {
     static List<String> getMergedLines(List<Path> paths) throws IOException {
         List<String> mergedLines = new ArrayList<String>();
         for (Path p : paths) {

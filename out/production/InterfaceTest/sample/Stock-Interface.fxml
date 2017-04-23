@@ -18,7 +18,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1225.0" style="-fx-background-color: #c63d0f;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1225.0" style="-fx-background-color: #c63d0f;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.models.stockFactories.Controller">
     <children>
         <SplitPane dividerPositions="0.40228245363766046" layoutX="21.0" layoutY="116.0" prefHeight="556.0" prefWidth="672.0">
             <items>
@@ -126,7 +126,7 @@
                      </children></AnchorPane>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="445.0" prefWidth="513.0" style="-fx-background-color: #3B3738;">
                      <children>
-                        <TableView layoutX="15.0" layoutY="11.0" prefHeight="414.0" prefWidth="466.0">
+                        <TableView fx:id="tableView" disable="true" layoutX="15.0" layoutY="11.0" prefHeight="414.0" prefWidth="466.0">
                           <columns>
                             <TableColumn prefWidth="75.0" text="C1" />
                             <TableColumn prefWidth="75.0" text="C2" />

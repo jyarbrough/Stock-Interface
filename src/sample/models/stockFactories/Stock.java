@@ -1,5 +1,6 @@
-package sample.models;
+package sample.models.stockFactories;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Stock {
@@ -11,6 +12,7 @@ public class Stock {
     private String sector;
     private String industry;
     private String link;
+    private ArrayList<StockHistoryRecord> stockHistoryRecords;
 
     public Stock(String symbol, String name, String marketCap, String ipoYear, String sector, String industry, String link) {
         this.symbol = symbol;
@@ -20,6 +22,14 @@ public class Stock {
         this.sector = sector;
         this.industry = industry;
         this.link = link;
+    }
+
+    public ArrayList<StockHistoryRecord> getStockHistoryRecords() {
+        return stockHistoryRecords;
+    }
+
+    public void setStockHistoryRecords(ArrayList<StockHistoryRecord> stockHistoryRecords) {
+        this.stockHistoryRecords = stockHistoryRecords;
     }
 
     public String getSymbol() {

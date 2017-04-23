@@ -1,4 +1,4 @@
-package sample;
+package sample.models.stockFactories;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,12 +7,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import sample.models.Stock;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -25,6 +26,7 @@ public class Controller implements Initializable {
     public RadioButton manualRadioButton;
     public ToggleGroup radioToggle;
     public ListView tickerSymbolListView;
+    public TableView tableView;
     public TextField tickerSymbolEntryField;
     public TextField companyTitleField;
     public TextField marketCapField;
@@ -32,6 +34,13 @@ public class Controller implements Initializable {
     public TextField sectorField;
     public TextField industryField;
     public TextField websiteField;
+
+    private TextField filterField;
+//    private TableView<StockHistoryRecord> stockTable;
+//    private TableColumn<StockHistoryRecord, String> firstNameColumn;
+//    private TableColumn<StockHistoryRecord, String> lastNameColumn;
+//    private ObservableList<StockHistoryRecord> masterData = FXCollections.observableArrayList();
+
 
     public void resetAll() {
         tickerSymbolListView.setDisable(true);
@@ -42,17 +51,15 @@ public class Controller implements Initializable {
         sectorField.setDisable(true);
         industryField.setDisable(true);
         websiteField.setDisable(true);
+        tableView.setDisable(true);
+
     }
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
 
-//        assert manualRadioButton != null : "fx:id=\"manualRadioButton\" was not injected: check your FXML file 'simple.fxml'.";
-
-        AllStockFactory allStockFactory = new AllStockFactory();
-        final HashMap<String, Stock> tickersMap = allStockFactory.build();
-
-        PrintTicker printTicker = new PrintTicker();
+        final HashMap<String, Stock> tickersMap = buildingStocks();
+        final PrintProfile printProfile = new PrintProfile();
 
         listRadioButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -64,6 +71,7 @@ public class Controller implements Initializable {
 
                 for (Stock stock : tickersMap.values()) {
                     String symbol = stock.getSymbol();
+
                     observableList.add(symbol);
                 }
 
@@ -76,7 +84,6 @@ public class Controller implements Initializable {
             public void handle(ActionEvent event) {
                 resetAll();
                 tickerSymbolEntryField.setDisable(false);
-
             }
         });
 
@@ -90,28 +97,41 @@ public class Controller implements Initializable {
                     sectorField.setDisable(false);
                     industryField.setDisable(false);
                     websiteField.setDisable(false);
+                    tableView.setDisable(false);
 
-//                    industryField.setText(PrintTicker.sendCompanyName(this.toString()));
+                    ObservableList<String> observableList = FXCollections.observableArrayList();
 
+                    for (Stock stock : tickersMap.values()) {
+                        ArrayList<StockHistoryRecord> data = stock.getStockHistoryRecords();
 
-                    String companyName = printTicker.getCompanyName(tickersMap, tickerSymbolEntryField.getText());
-                    String marketCap = printTicker.getMarketCap(tickersMap);
+                        observableList.add(String.valueOf(data));
+
+                    }
+
+                    String companyName = printProfile.getCompanyName(tickersMap, tickerSymbolEntryField.getText());
+                    String marketCap = printProfile.getMarketCap(tickersMap, tickerSymbolEntryField.getText());
+                    String ipoYear = printProfile.getIpoYear(tickersMap, tickerSymbolEntryField.getText());
+                    String sector = printProfile.getSector(tickersMap, tickerSymbolEntryField.getText());
+                    String industry = printProfile.getIndustry(tickersMap, tickerSymbolEntryField.getText());
+                    String website = printProfile.getLink(tickersMap, tickerSymbolEntryField.getText());
 
                     companyTitleField.setText(companyName);
                     marketCapField.setText(marketCap);
+                    ipoYearField.setText(ipoYear);
+                    sectorField.setText(sector);
+                    industryField.setText(industry);
+                    websiteField.setText(website);
 
-//                    sectorField.setText(ReadThroughTickers.printCompanyMethod());
                 }
             }
         });
     }
-//
-//    public void companyNameController(String companyName) {
-//        companyTitleField.setText(companyName);
-//    }
 
-    public void printToTextFields(String companyName, String marketCap, String ipoYear, String sector, String industry, String link) {
-
-
+    private HashMap<String, Stock> buildingStocks() {
+        AllStockFactory allStockFactory = new AllStockFactory();
+        HashMap<String, Stock> tickersMap = allStockFactory.build();
+        final StockHistoryFactory stockHistoryFactory = new StockHistoryFactory();
+        PopulateStockHistory.populateStockHistory(stockHistoryFactory, tickersMap);
+        return tickersMap;
     }
 }

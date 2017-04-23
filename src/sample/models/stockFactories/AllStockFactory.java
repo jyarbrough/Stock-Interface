@@ -1,6 +1,4 @@
-package sample;
-
-import sample.models.Stock;
+package sample.models.stockFactories;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,6 +7,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class AllStockFactory {
+
     public HashMap<String, Stock> build(){
 
         try {
@@ -17,9 +16,8 @@ public class AllStockFactory {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         HashMap<String, Stock> tickersMap = new HashMap<String, Stock>();
-        File filePointer = new File("/Users/joeyarbrough/Advanced-Java-Labs/Homework/Assign02/src/Tickers.csv");
+        File filePointer = new File("/Users/joeyarbrough/Advanced-Java-Labs/My-Tutorials/InterfaceTest/src/sample/outputFiles/Tickers.csv");
         Scanner input = null;
         try {
             input = new Scanner(filePointer);
@@ -30,25 +28,18 @@ public class AllStockFactory {
         while (input.hasNext()) {
             String line = input.nextLine();
             String[] stockArray = line.split(",");
-            String symbol = stockArray[0];
-            String name = stockArray[1];
-            String marketCap = stockArray[3];
-            String ipoYear = stockArray[4];
-            String sector = stockArray[5];
-            String industry = stockArray[6];
-            String link = stockArray[7];
+            String symbol = stockArray[0].replace("\"", "");
+            String name = stockArray[1].replace("\"", "");
+            String marketCap = stockArray[3].replace("\"", "");
+            String ipoYear = stockArray[4].replace("\"", "");
+            String sector = stockArray[5].replace("\"", "");
+            String industry = stockArray[6].replace("\"", "");
+            String link = stockArray[7].replace("\"", "");
 
             Stock tempStock = new Stock(symbol, name, marketCap, ipoYear, sector, industry, link);
             tickersMap.put(tempStock.getSymbol(), tempStock);
         }
-
         input.close();
         return tickersMap;
-
-
-
-
     }
-
-
 }
