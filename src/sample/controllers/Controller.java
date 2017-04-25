@@ -93,11 +93,15 @@ public class Controller implements Initializable {
 
 
         Stock stock = tickersMap.get(searchSymbol);
-        ObservableList<StockHistoryRecord> stockData = FXCollections.observableArrayList();
         ArrayList<StockHistoryRecord> stockHistoryRecords = stock.getStockHistoryRecords();
 
-        stockData.addAll(stockHistoryRecords);
-        stockDataTable.setItems(stockData);
+        try {
+            ObservableList<StockHistoryRecord> stockData = FXCollections.observableArrayList();
+            stockData.addAll(stockHistoryRecords);
+            stockDataTable.setItems(stockData);
+        } catch (Exception e) {
+//            e.printStackTrace();
+        }
 
         companyTitleField.setText(stock.companyNameToString());
         marketCapField.setText(stock.marketCapToString());
