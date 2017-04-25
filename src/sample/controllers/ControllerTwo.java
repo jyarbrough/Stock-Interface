@@ -4,9 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import sample.models.stockFactories.*;
 
@@ -29,24 +28,26 @@ public class ControllerTwo implements Initializable {
         populateStockHistory.populateStockHistory(stockHistoryFactory, tickersMap);
 
 
-        lineChart.setData(getChartData(tickersMap));
+        Stock QQQ = tickersMap.get("QQQ");
+        lineChart.setData(getChartData(QQQ.getStockHistoryRecords()));
     }
 
-    private ObservableList<XYChart.Series<String, Double>> getChartData(HashMap<String, Stock> tickersMap) {
+    private ObservableList<XYChart.Series<String, Double>> getChartData(ArrayList<StockHistoryRecord> stockHistoryRecords) {
         ObservableList<XYChart.Series<String, Double>> dataToPlot = FXCollections.observableArrayList();
 
         XYChart.Series<String, Double> highLine = new XYChart.Series<String, Double>();
         highLine.setName("High");
 
+        XYChart.Series<String, Double> lowLine = new XYChart.Series<String, Double>();
+        lowLine.setName("Low");
 
-        Stock QQQ = tickersMap.get("QQQ");
-        ArrayList<StockHistoryRecord> historyRecords = QQQ.getStockHistoryRecords();
 
-        for (StockHistoryRecord historyRecord : historyRecords) {
+        for (StockHistoryRecord historyRecord : stockHistoryRecords) {
             highLine.getData().add(new XYChart.Data(historyRecord.getDate(), historyRecord.getHigh()));
+            lowLine.getData().add(new XYChart.Data(historyRecord.getDate(), historyRecord.getLow()));
         }
 
-        dataToPlot.addAll(highLine);
+        dataToPlot.addAll(highLine, lowLine);
 
         return dataToPlot;
     }
