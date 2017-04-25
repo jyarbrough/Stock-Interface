@@ -1,5 +1,7 @@
 package sample.models.stockFactories;
 
+import sample.readThroughFileHandlers.PathSetup;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,7 +19,7 @@ public class AllStockFactory {
             e.printStackTrace();
         }
         HashMap<String, Stock> tickersMap = new HashMap<String, Stock>();
-        File filePointer = new File("/Users/joeyarbrough/Advanced-Java-Labs/My-Tutorials/InterfaceTest/src/sample/outputFiles/Tickers.csv");
+        File filePointer = new File("/Users/joeyarbrough/Advanced-Java-Labs/My-Tutorials/InterfaceTest/src/sample/csvFiles/outputFiles/Tickers.csv");
         Scanner input = null;
         try {
             input = new Scanner(filePointer);

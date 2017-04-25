@@ -1,21 +1,17 @@
-package sample.models.stockFactories;
+package sample.printHandlers;
+
+import sample.models.stockFactories.Stock;
 
 import java.util.HashMap;
 
 public class PrintProfile {
-    PrintProfile() {
+    public PrintProfile() {
     }
 
     public String getCompanyName(HashMap<String, Stock> tickersMap, String searchKey) {
         Stock stock = tickersMap.get(searchKey);
 
-
-//        another example of how to remove "" from the csv file
-//        return stock.companyNameToString().substring(1, stock.companyNameToString().length() - 1 );
-//        return stock.companyNameToString().replace("\"", "");
-
         return stock.companyNameToString();
-
     }
 
     public String getCompanySymbol(HashMap<String, Stock> tickersMap, String searchKey) {

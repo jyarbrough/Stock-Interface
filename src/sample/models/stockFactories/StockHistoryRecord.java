@@ -1,11 +1,17 @@
 package sample.models.stockFactories;
 
-public class StockHistoryRecord {
+import java.util.ArrayList;
+
+public class StockHistoryRecord extends ArrayList<StockHistoryRecord> {
 
     private String date;
     private Double high;
     private Double low;
     private Double adjClose;
+
+    public StockHistoryRecord() {
+
+    }
 
     public StockHistoryRecord(String date, Double high, Double low, Double adjClose) {
         this.date = date;
@@ -51,4 +57,12 @@ public class StockHistoryRecord {
         return "\nDate: " + this.getDate() + "\nHigh: " + this.getHigh() + "\nLow: " + this.getLow()
                 + "\nAdjust Closing: " + this.getAdjClose();
     }
+
+    public String dateToString() { return this.getDate(); }
+
+    public String highToString() { return String.valueOf(this.getHigh()); }
+
+    public String lowToString() { return String.valueOf(this.getLow()); }
+
+    public String closeToString() { return String.valueOf(this.getAdjClose()); }
 }

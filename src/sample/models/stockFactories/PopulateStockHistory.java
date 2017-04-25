@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PopulateStockHistory {
-    static void populateStockHistory(StockHistoryFactory stockHistoryFactory, HashMap<String, Stock> stocks) {
+    public void populateStockHistory(StockHistoryFactory stockHistoryFactory, HashMap<String, Stock> stocks) {
         for (String symbol : stocks.keySet()) {
-            String path = "/Users/joeyarbrough/Advanced-Java-Labs/My-Tutorials/InterfaceTest/src/sample/outputFiles/".concat(symbol).concat(".csv");
+            String path = "/Users/joeyarbrough/Advanced-Java-Labs/My-Tutorials/InterfaceTest/src/sample/csvFiles/outputFiles/".concat(symbol).concat(".csv");
 
             ArrayList<StockHistoryRecord> stockHistoryRecords = null;
             try {

@@ -1,4 +1,4 @@
-package sample.models.stockFactories;
+package sample.readThroughFileHandlers;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

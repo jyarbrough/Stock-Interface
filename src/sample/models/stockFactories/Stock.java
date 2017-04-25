@@ -12,6 +12,8 @@ public class Stock {
     private String sector;
     private String industry;
     private String link;
+
+    private String date;
     private ArrayList<StockHistoryRecord> stockHistoryRecords;
 
     public Stock(String symbol, String name, String marketCap, String ipoYear, String sector, String industry, String link) {
@@ -31,6 +33,12 @@ public class Stock {
     public void setStockHistoryRecords(ArrayList<StockHistoryRecord> stockHistoryRecords) {
         this.stockHistoryRecords = stockHistoryRecords;
     }
+
+    public String getDate() {
+        return date;
+    }
+
+
 
     public String getSymbol() {
         return symbol;
@@ -91,9 +99,7 @@ public class Stock {
         return this.getSymbol();
     }
 
-    public String companyNameToString() {
-        return this.getName();
-    }
+    public String companyNameToString() { return this.getName();}
 
     public String marketCapToString() {
         return this.getMarketCap();
