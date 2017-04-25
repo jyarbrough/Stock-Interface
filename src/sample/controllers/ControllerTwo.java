@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
+import sample.Context;
 import sample.models.stockFactories.*;
 
 import java.net.URL;
@@ -21,15 +22,9 @@ public class ControllerTwo implements Initializable {
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        final StockHistoryFactory stockHistoryFactory = new StockHistoryFactory();
-        AllStockFactory allStockFactory = new AllStockFactory();
-        PopulateStockHistory populateStockHistory = new PopulateStockHistory();
-        HashMap<String, Stock> tickersMap = allStockFactory.build();
-        populateStockHistory.populateStockHistory(stockHistoryFactory, tickersMap);
-
-
-        Stock QQQ = tickersMap.get("QQQ");
-        lineChart.setData(getChartData(QQQ.getStockHistoryRecords()));
+        Context context = Context.getInstance();
+        Stock stock = context.getStock();
+        lineChart.setData(getChartData(stock.getStockHistoryRecords()));
     }
 
     private ObservableList<XYChart.Series<String, Double>> getChartData(ArrayList<StockHistoryRecord> stockHistoryRecords) {

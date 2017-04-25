@@ -17,6 +17,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import sample.Context;
 import sample.models.stockFactories.*;
 
 import java.io.IOException;
@@ -24,6 +25,8 @@ import java.net.URL;
 import java.util.*;
 
 public class Controller implements Initializable {
+    private String selectedStockSymbol;
+
     @FXML
     public AnchorPane radioButtonPane;
     public AnchorPane manualEntryPane;
@@ -78,7 +81,7 @@ public class Controller implements Initializable {
         initializeList(tickersMap);
         intializeListRadioButton(tickersMap);
         initializeManualRadioButton();
-        initializeGraphButton();
+        initializeGraphButton(tickersMap);
         initializeTickerSymbolEntry(tickersMap);
         initializeSearchField(tickersMap);
     }
@@ -90,6 +93,7 @@ public class Controller implements Initializable {
                 if (enterKeyPressed.getCode().equals(KeyCode.ENTER)) {
                     String searchSymbol = tickerSymbolEntryField.getText();
 
+                    selectedStockSymbol = searchSymbol;
                     displayProfile(searchSymbol, tickersMap);
                 }
             }
@@ -199,7 +203,7 @@ public class Controller implements Initializable {
         });
     }
 
-    private void initializeGraphButton() {
+    private void initializeGraphButton(HashMap<String, Stock> tickersMap) {
         graphViewButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -207,12 +211,14 @@ public class Controller implements Initializable {
                 Parent root = null;
                 stage = (Stage) graphViewButton.getScene().getWindow();
 
+                Context context = Context.getInstance();
+                context.setStock(tickersMap.get(selectedStockSymbol));
+
                 try {
                     root = FXMLLoader.load(getClass().getResource("../Stock-Graph.fxml"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
@@ -246,7 +252,7 @@ public class Controller implements Initializable {
             public void handle(MouseEvent event) {
 
                 String searchSymbol = tickerSymbolListView.getSelectionModel().getSelectedItem().toString();
-
+                selectedStockSymbol = searchSymbol;
                 displayProfile(searchSymbol, tickersMap);
 
             }
