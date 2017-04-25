@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import sample.models.stockFactories.*;
 import sample.printHandlers.PrintProfile;
@@ -28,9 +29,6 @@ public class Controller implements Initializable {
     public RadioButton manualRadioButton;
     public ToggleGroup radioToggle;
     public ListView tickerSymbolListView;
-
-//    public TableView tableView;
-
     public TextField tickerSymbolEntryField;
     public TextField companyTitleField;
     public TextField marketCapField;
@@ -61,6 +59,8 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
 
+
+
         final PrintProfile printProfile = new PrintProfile();
         final StockHistoryFactory stockHistoryFactory = new StockHistoryFactory();
 
@@ -71,9 +71,13 @@ public class Controller implements Initializable {
         populateStockHistory.populateStockHistory(stockHistoryFactory, tickersMap);
 
         chooseFromListOption(tickersMap);
-
+        intializeListView(tickersMap);
         manualEntryOption();
 
+        initializeTickerSymbolEntry(tickersMap);
+    }
+
+    private void initializeTickerSymbolEntry(final HashMap<String, Stock> tickersMap) {
         tickerSymbolEntryField.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent enterKeyPressed) {
@@ -170,6 +174,20 @@ public class Controller implements Initializable {
                     observableList.add(symbol);
                 }
                 tickerSymbolListView.setItems(observableList);
+            }
+        });
+    }
+
+    private void intializeListView(final HashMap<String, Stock> tickersMap) {
+        tickerSymbolListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+
+                String searchSymbol = tickerSymbolListView.getSelectionModel().getSelectedItem().toString();
+
+                displayProfile(searchSymbol, tickersMap);
+
             }
         });
     }
