@@ -5,7 +5,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -13,8 +16,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import sample.models.stockFactories.*;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -27,6 +32,7 @@ public class Controller implements Initializable {
     public RadioButton manualRadioButton;
     public ToggleGroup radioToggle;
     public ListView tickerSymbolListView;
+    public Button graphViewButton;
 
     public TextField searchDateEntryField;
     public TextField tickerSymbolEntryField;
@@ -40,9 +46,9 @@ public class Controller implements Initializable {
     @FXML
     TableView<StockHistoryRecord> stockDataTable = new TableView<>();
 
-
     public void resetAll(boolean shouldDisableSymbolEntryField) {
         tickerSymbolListView.setDisable(true);
+        graphViewButton.setDisable(true);
         searchDateEntryField.setText("");
         companyTitleField.setText("");
         marketCapField.setText("");
@@ -53,7 +59,7 @@ public class Controller implements Initializable {
         if (shouldDisableSymbolEntryField) {
             tickerSymbolEntryField.setDisable(true);
         }
-        setProfileFieldsToFalse(true);
+        setFieldsToFalse(true);
         stockDataTable.setItems(FXCollections.observableArrayList());
     }
 
@@ -72,6 +78,7 @@ public class Controller implements Initializable {
         initializeList(tickersMap);
         intializeListRadioButton(tickersMap);
         initializeManualRadioButton();
+        initializeGraphButton();
         initializeTickerSymbolEntry(tickersMap);
         initializeSearchField(tickersMap);
     }
@@ -108,7 +115,7 @@ public class Controller implements Initializable {
                         for (StockHistoryRecord stockHistoryRecord : stockHistoryRecords) {
                             String date = stockHistoryRecord.getDate();
 
-                            if(dateSearch.equals(date)) {
+                            if (dateSearch.equals(date)) {
                                 stockData.add(stockHistoryRecord);
                             }
                         }
@@ -116,19 +123,15 @@ public class Controller implements Initializable {
                     } catch (Exception e) {
 //            e.printStackTrace();
                     }
-
-
-
                 }
             }
         });
-
     }
 
 
     private void displayProfile(String searchSymbol, HashMap<String, Stock> tickersMap) {
         resetAll(false);
-        setProfileFieldsToFalse(false);
+        setFieldsToFalse(false);
         setupTableColumns();
 
         Stock stock = tickersMap.get(searchSymbol);
@@ -149,9 +152,6 @@ public class Controller implements Initializable {
         industryField.setText(stock.industryToString());
         websiteField.setText(stock.linkToString());
     }
-
-
-
 
     private void setupTableColumns() {
         TableColumn dateColumn = new TableColumn("Date");
@@ -177,7 +177,7 @@ public class Controller implements Initializable {
         stockDataTable.getColumns().addAll(dateColumn, highColumn, lowColumn, adjCloseColumn);
     }
 
-    private void setProfileFieldsToFalse(boolean value) {
+    private void setFieldsToFalse(boolean value) {
         searchDateEntryField.setDisable(value);
         companyTitleField.setDisable(value);
         marketCapField.setDisable(value);
@@ -186,6 +186,7 @@ public class Controller implements Initializable {
         industryField.setDisable(value);
         websiteField.setDisable(value);
         stockDataTable.setDisable(value);
+        graphViewButton.setDisable(value);
     }
 
     private void initializeManualRadioButton() {
@@ -197,6 +198,28 @@ public class Controller implements Initializable {
             }
         });
     }
+
+    private void initializeGraphButton() {
+        graphViewButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage;
+                Parent root = null;
+                stage = (Stage) graphViewButton.getScene().getWindow();
+
+                try {
+                    root = FXMLLoader.load(getClass().getResource("../Stock-Graph.fxml"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            }
+        });
+    }
+
 
     private void initializeList(final HashMap<String, Stock> tickersMap) {
         listRadioButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -219,7 +242,6 @@ public class Controller implements Initializable {
 
     private void intializeListRadioButton(final HashMap<String, Stock> tickersMap) {
         tickerSymbolListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
             @Override
             public void handle(MouseEvent event) {
 

@@ -131,15 +131,16 @@
                 </SplitPane>
             </children>
         </AnchorPane>
-        <ToggleButton layoutX="1040.0" layoutY="41.0" mnemonicParsing="false" text="Graph View" />
         <ImageView id="mainLogo" fitHeight="104.0" fitWidth="200.0" layoutX="362.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="586.0" AnchorPane.leftAnchor="362.0" AnchorPane.topAnchor="3.0">
             <image>
                 <Image url="@../../interface-photos/comp-with-lineBar.png" />
-            </image></ImageView>
+            </image>
+      </ImageView>
         <ImageView fitHeight="103.0" fitWidth="55.0" layoutX="1140.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../interface-photos/growth-graph.png" />
             </image>
         </ImageView>
+      <Button fx:id="graphViewButton" layoutX="1027.0" layoutY="41.0" mnemonicParsing="false" text="Graph View" />
     </children>
 </AnchorPane>
