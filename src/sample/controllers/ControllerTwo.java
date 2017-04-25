@@ -1,15 +1,23 @@
 package sample.controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import sample.models.stockFactories.AllStockFactory;
-import sample.models.stockFactories.PopulateStockHistory;
-import sample.models.stockFactories.Stock;
-import sample.models.stockFactories.StockHistoryFactory;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import sample.models.stockFactories.*;
+
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class ControllerTwo implements Initializable {
+    @FXML
+    LineChart lineChart;
 
 
     @Override
@@ -20,6 +28,27 @@ public class ControllerTwo implements Initializable {
         HashMap<String, Stock> tickersMap = allStockFactory.build();
         populateStockHistory.populateStockHistory(stockHistoryFactory, tickersMap);
 
+
+        lineChart.setData(getChartData(tickersMap));
+    }
+
+    private ObservableList<XYChart.Series<String, Double>> getChartData(HashMap<String, Stock> tickersMap) {
+        ObservableList<XYChart.Series<String, Double>> dataToPlot = FXCollections.observableArrayList();
+
+        XYChart.Series<String, Double> highLine = new XYChart.Series<String, Double>();
+        highLine.setName("High");
+
+
+        Stock QQQ = tickersMap.get("QQQ");
+        ArrayList<StockHistoryRecord> historyRecords = QQQ.getStockHistoryRecords();
+
+        for (StockHistoryRecord historyRecord : historyRecords) {
+            highLine.getData().add(new XYChart.Data(historyRecord.getDate(), historyRecord.getHigh()));
+        }
+
+        dataToPlot.addAll(highLine);
+
+        return dataToPlot;
     }
 
 }
