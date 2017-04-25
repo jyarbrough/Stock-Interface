@@ -14,8 +14,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import sample.models.stockFactories.*;
-import sample.printHandlers.PrintProfile;
-import sample.printHandlers.PrintStats;
 
 import java.net.URL;
 import java.util.*;
@@ -29,6 +27,8 @@ public class Controller implements Initializable {
     public RadioButton manualRadioButton;
     public ToggleGroup radioToggle;
     public ListView tickerSymbolListView;
+
+    public TextField searchDateEntryField;
     public TextField tickerSymbolEntryField;
     public TextField companyTitleField;
     public TextField marketCapField;
@@ -43,6 +43,7 @@ public class Controller implements Initializable {
 
     public void resetAll(boolean shouldDisableSymbolEntryField) {
         tickerSymbolListView.setDisable(true);
+        searchDateEntryField.setText("");
         companyTitleField.setText("");
         marketCapField.setText("");
         ipoYearField.setText("");
@@ -58,23 +59,21 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-
-
-
-        final PrintProfile printProfile = new PrintProfile();
         final StockHistoryFactory stockHistoryFactory = new StockHistoryFactory();
-
-        PrintStats printStats = new PrintStats();
         AllStockFactory allStockFactory = new AllStockFactory();
         PopulateStockHistory populateStockHistory = new PopulateStockHistory();
         HashMap<String, Stock> tickersMap = allStockFactory.build();
         populateStockHistory.populateStockHistory(stockHistoryFactory, tickersMap);
 
-        chooseFromListOption(tickersMap);
-        intializeListView(tickersMap);
-        manualEntryOption();
+        initializeEventListeners(tickersMap);
+    }
 
+    private void initializeEventListeners(HashMap<String, Stock> tickersMap) {
+        initializeList(tickersMap);
+        intializeListRadioButton(tickersMap);
+        initializeManualRadioButton();
         initializeTickerSymbolEntry(tickersMap);
+        initializeSearchField(tickersMap);
     }
 
     private void initializeTickerSymbolEntry(final HashMap<String, Stock> tickersMap) {
@@ -90,11 +89,47 @@ public class Controller implements Initializable {
         });
     }
 
+    private void initializeSearchField(final HashMap<String, Stock> tickersMap) {
+        searchDateEntryField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent enterKeyPressed) {
+                if (enterKeyPressed.getCode().equals(KeyCode.ENTER)) {
+                    stockDataTable.setItems(FXCollections.observableArrayList());
+
+                    String dateSearch = searchDateEntryField.getText();
+                    String searchSymbol = tickerSymbolEntryField.getText();
+
+
+                    Stock stock = tickersMap.get(searchSymbol);
+                    ArrayList<StockHistoryRecord> stockHistoryRecords = stock.getStockHistoryRecords();
+
+                    try {
+                        ObservableList<StockHistoryRecord> stockData = FXCollections.observableArrayList();
+                        for (StockHistoryRecord stockHistoryRecord : stockHistoryRecords) {
+                            String date = stockHistoryRecord.getDate();
+
+                            if(dateSearch.equals(date)) {
+                                stockData.add(stockHistoryRecord);
+                            }
+                        }
+                        stockDataTable.setItems(stockData);
+                    } catch (Exception e) {
+//            e.printStackTrace();
+                    }
+
+
+
+                }
+            }
+        });
+
+    }
+
+
     private void displayProfile(String searchSymbol, HashMap<String, Stock> tickersMap) {
         resetAll(false);
         setProfileFieldsToFalse(false);
         setupTableColumns();
-
 
         Stock stock = tickersMap.get(searchSymbol);
         ArrayList<StockHistoryRecord> stockHistoryRecords = stock.getStockHistoryRecords();
@@ -114,6 +149,9 @@ public class Controller implements Initializable {
         industryField.setText(stock.industryToString());
         websiteField.setText(stock.linkToString());
     }
+
+
+
 
     private void setupTableColumns() {
         TableColumn dateColumn = new TableColumn("Date");
@@ -140,6 +178,7 @@ public class Controller implements Initializable {
     }
 
     private void setProfileFieldsToFalse(boolean value) {
+        searchDateEntryField.setDisable(value);
         companyTitleField.setDisable(value);
         marketCapField.setDisable(value);
         ipoYearField.setDisable(value);
@@ -149,7 +188,7 @@ public class Controller implements Initializable {
         stockDataTable.setDisable(value);
     }
 
-    private void manualEntryOption() {
+    private void initializeManualRadioButton() {
         manualRadioButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -159,7 +198,7 @@ public class Controller implements Initializable {
         });
     }
 
-    private void chooseFromListOption(final HashMap<String, Stock> tickersMap) {
+    private void initializeList(final HashMap<String, Stock> tickersMap) {
         listRadioButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -178,7 +217,7 @@ public class Controller implements Initializable {
         });
     }
 
-    private void intializeListView(final HashMap<String, Stock> tickersMap) {
+    private void intializeListRadioButton(final HashMap<String, Stock> tickersMap) {
         tickerSymbolListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override

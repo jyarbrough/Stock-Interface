@@ -121,8 +121,7 @@
                     <items>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: #3B3738;">
                      <children>
-                        <RadioButton fx:id="searchByDateRadioButton" disable="true" layoutX="65.0" layoutY="45.0" mnemonicParsing="false" style="-fx-text-fill: #ffffff;" text="Search By Date:" />
-                        <TextField fx:id="searchDateEntryField" alignment="CENTER" disable="true" layoutX="265.0" layoutY="42.0" prefHeight="27.0" prefWidth="190.0" promptText="Enter Symbol Here" />
+                        <TextField fx:id="searchDateEntryField" alignment="CENTER" disable="true" layoutX="154.0" layoutY="41.0" prefHeight="27.0" prefWidth="190.0" promptText="Enter Symbol Here" />
                      </children></AnchorPane>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="445.0" prefWidth="513.0" style="-fx-background-color: #3B3738;">
                      <children>
